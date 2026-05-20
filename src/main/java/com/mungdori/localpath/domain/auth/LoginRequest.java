@@ -2,11 +2,8 @@ package com.mungdori.localpath.domain.auth;
 
 import jakarta.validation.constraints.NotNull;
 
-public record Token(
+public record LoginRequest(
         @NotNull
-        String accessToken,
-        @NotNull
-        String refreshToken) {
-
-
+        String accessToken
+) {
 }

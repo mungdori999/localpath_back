@@ -1,12 +1,15 @@
 package com.mungdori.localpath.domain.auth;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
-@AllArgsConstructor
-public class LoginOAuth2 {
+public record LoginOAuth2(
 
-    private String name;
-    private String email;
+        @NotNull
+        String name,
+        @Email
+        String email) {
+
 }

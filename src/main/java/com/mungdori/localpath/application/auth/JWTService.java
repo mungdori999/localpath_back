@@ -28,14 +28,17 @@ public class JWTService {
     public Long getId(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("id", Long.class);
     }
+
     public String getName(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("name",String.class);
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("name", String.class);
     }
-    public String getLoginType(String token){
+
+    public String getLoginType(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("loginType", String.class);
     }
+
     public String getCategory(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category",String.class);
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
     }
 
 
@@ -47,7 +50,7 @@ public class JWTService {
         String accessToken = Jwts.builder()
                 .claim("id", id)
                 .claim("name", name)
-                .claim("category","accessToken")
+                .claim("category", "accessToken")
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + accessExpireLong))
                 .signWith(secretKey)
@@ -56,11 +59,11 @@ public class JWTService {
         String refreshToken = Jwts.builder()
                 .claim("id", id)
                 .claim("name", name)
-                .claim("category","refreshToken")
+                .claim("category", "refreshToken")
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + refreshExpireLong))
                 .signWith(secretKey)
                 .compact();
-        return Token.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+        return new Token(accessToken, refreshToken);
     }
 }
