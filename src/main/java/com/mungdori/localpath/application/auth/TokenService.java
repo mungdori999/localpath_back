@@ -1,10 +1,13 @@
 package com.mungdori.localpath.application.auth;
 
+import com.mungdori.localpath.application.auth.required.TokenRepository;
+import com.mungdori.localpath.domain.auth.RefreshToken;
 import com.mungdori.localpath.domain.auth.Token;
 import io.jsonwebtoken.Jwts;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,17 +15,22 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Slf4j
-@Component
-public class JWTService {
+@Service
+@Transactional
+public class TokenService {
 
     private final SecretKey secretKey;
+    private final TokenRepository tokenRepository;
+
     @Value("${spring.jwt.accessToken-expire-length}")
     private long accessExpireLong;
     @Value("${spring.jwt.refresh-expire-length}")
     private long refreshExpireLong;
 
-    public JWTService(@Value("${spring.jwt.secret}") String secret) {
+
+    public TokenService(@Value("${spring.jwt.secret}") String secret, TokenRepository tokenRepository) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        this.tokenRepository = tokenRepository;
     }
 
     public Long getId(String token) {
@@ -33,10 +41,6 @@ public class JWTService {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("name", String.class);
     }
 
-    public String getLoginType(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("loginType", String.class);
-    }
-
     public String getCategory(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
     }
@@ -44,6 +48,10 @@ public class JWTService {
 
     public Boolean isExpired(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+    }
+
+    public RefreshToken save(String refreshToken) {
+        return tokenRepository.save(RefreshToken.create(refreshToken));
     }
 
     public Token createToken(Long id, String name) {

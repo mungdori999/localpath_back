@@ -9,3 +9,9 @@ spring:
   docker:
     compose:
       lifecycle-management: start_only
+
+
+  jwt:
+    accessToken-expire-length: 600000
+    refresh-expire-length: 2592000000
+    secret: ${JWT_SECRET_KEY}

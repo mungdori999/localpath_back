@@ -1,6 +1,5 @@
 package com.mungdori.localpath.domain.member;
 
-import com.mungdori.localpath.domain.auth.LoginOAuth2;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

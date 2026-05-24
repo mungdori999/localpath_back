@@ -5,10 +5,12 @@ import com.mungdori.localpath.application.member.required.MemberRepository;
 import com.mungdori.localpath.domain.auth.LoginOAuth2;
 import com.mungdori.localpath.domain.member.Member;
 import com.mungdori.localpath.domain.member.MemberRegisterRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService implements MemberRegister {
 
