@@ -2,13 +2,11 @@ package com.mungdori.localpath.adapter.auth;
 
 import com.mungdori.localpath.application.auth.JWTUtil;
 import com.mungdori.localpath.domain.auth.CustomOAuth2User;
-import com.mungdori.localpath.domain.auth.Token;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -57,7 +55,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60 * 60 * 60);
+        cookie.setMaxAge((int) refreshExpireLong);
         //cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);

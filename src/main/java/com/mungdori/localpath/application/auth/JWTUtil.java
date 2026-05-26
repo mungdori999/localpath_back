@@ -1,6 +1,5 @@
 package com.mungdori.localpath.application.auth;
 
-import com.mungdori.localpath.domain.auth.Token;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
