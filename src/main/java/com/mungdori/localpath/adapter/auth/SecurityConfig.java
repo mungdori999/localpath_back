@@ -1,5 +1,8 @@
 package com.mungdori.localpath.adapter.auth;
 
+import com.mungdori.localpath.adapter.auth.filter.CustomLogoutFilter;
+import com.mungdori.localpath.adapter.auth.filter.CustomSuccessHandler;
+import com.mungdori.localpath.adapter.auth.filter.JWTFilter;
 import com.mungdori.localpath.application.auth.CustomOAuth2UserService;
 import com.mungdori.localpath.application.auth.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -69,6 +73,9 @@ public class SecurityConfig {
         //JWTFilter 추가
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil), LogoutFilter.class);
 
         //oauth2
         http

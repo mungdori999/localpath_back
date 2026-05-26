@@ -10,13 +10,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class ReissueApi {
 
     private final JWTUtil jwtUtil;
+    @Value("${spring.jwt.accessToken-expire-length}")
+    private long accessExpireLong;
     @Value("${spring.jwt.refresh-expire-length}")
     private long refreshExpireLong;
 
@@ -64,11 +68,23 @@ public class ReissueApi {
         String email = jwtUtil.getEmail(refresh);
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", name, role, email, refreshExpireLong);
+        String newAccess = jwtUtil.createJwt("access", name, role, email, accessExpireLong);
+        String newRefresh = jwtUtil.createJwt("refresh", name, role, email, refreshExpireLong);
 
         //response
         response.setHeader("access", newAccess);
-
+        response.addCookie(createCookie("refresh", newRefresh));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private Cookie createCookie(String key, String value) {
+
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge((int) refreshExpireLong);
+        //cookie.setSecure(true);
+        //cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        return cookie;
     }
 }

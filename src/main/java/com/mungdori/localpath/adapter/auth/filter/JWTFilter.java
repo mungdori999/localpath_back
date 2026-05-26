@@ -1,4 +1,4 @@
-package com.mungdori.localpath.adapter.auth;
+package com.mungdori.localpath.adapter.auth.filter;
 
 import com.mungdori.localpath.application.auth.JWTUtil;
 import com.mungdori.localpath.domain.auth.CustomOAuth2User;
