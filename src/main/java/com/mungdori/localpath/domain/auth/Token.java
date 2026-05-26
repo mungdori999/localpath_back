@@ -1,12 +1,13 @@
 package com.mungdori.localpath.domain.auth;
 
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record Token(
-        @NotNull
-        String accessToken,
-        @NotNull
-        String refreshToken) {
+@Getter
+@AllArgsConstructor
+public class Token {
+    String accessToken;
+    String refreshToken;
 
 
 }

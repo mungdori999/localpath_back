@@ -8,6 +8,7 @@ public class LocalpathApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LocalpathApplication.class, args);
+
     }
 
 }
