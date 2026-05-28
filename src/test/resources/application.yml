@@ -1,36 +1,31 @@
 spring:
-  application.name: localpath
-
+  datasource:
+    url: jdbc:h2:mem:localpath_test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: create
-
-  docker:
-    compose:
-      lifecycle-management: start_only
-
-
+      ddl-auto: create-drop
+    show-sql: false
   jwt:
     accessToken-expire-length: 600000
     refresh-expire-length: 2592000000
-    secret: ${JWT_SECRET_KEY}
-
+    secret: test_jwt_secret_for_tests
   security:
     oauth2:
       client:
         registration:
           kakao:
             client-name: kakao
-            client-id: ${KAKAO_API_KEY}
-            client-secret: ${KAKAO_CLIENT_SECRET}
+            client-id: test
+            client-secret: test
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
               - profile_nickname
               - account_email
-
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -38,9 +33,3 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-localpath:
-  frontend:
-    url: ${LOCALPATH_FRONTEND_URL:http://localhost:5173}
-  cors:
-    allowed-origins:
-      - ${LOCALPATH_FRONTEND_URL:http://localhost:5173}

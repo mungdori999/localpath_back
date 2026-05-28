@@ -1,6 +1,7 @@
 package com.mungdori.localpath.application.auth;
 
 import com.mungdori.localpath.application.member.required.MemberRepository;
+import com.mungdori.localpath.common.constants.AuthConstants;
 import com.mungdori.localpath.domain.auth.CustomOAuth2User;
 import com.mungdori.localpath.domain.auth.KakaoResponse;
 import com.mungdori.localpath.domain.auth.OAuth2Response;
@@ -30,7 +31,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         OAuth2Response oAuth2Response = null;
-        if (registrationId.equals("kakao")) {
+        if (AuthConstants.OAUTH_PROVIDER_KAKAO.equals(registrationId)) {
 
             oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
         } else {
@@ -42,7 +43,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if(member.isPresent()){
             OAuth2ResponseUser user
-                    = new OAuth2ResponseUser("ROLE_USER", oAuth2Response.getEmail(), oAuth2Response.getName());
+                    = new OAuth2ResponseUser(AuthConstants.ROLE_USER, oAuth2Response.getEmail(), oAuth2Response.getName());
 
         return new CustomOAuth2User(user);
         }
@@ -52,7 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             memberRepository.save(register);
 
             OAuth2ResponseUser user
-                    = new OAuth2ResponseUser("ROLE_USER",register.getEmail(), register.getName());
+                    = new OAuth2ResponseUser(AuthConstants.ROLE_USER, register.getEmail(), register.getName());
         return new CustomOAuth2User(user);
         }
     }
