@@ -24,7 +24,7 @@ spring:
             client-name: kakao
             client-id: ${KAKAO_API_KEY}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: ${BACKEND_URL}/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
@@ -40,7 +40,7 @@ spring:
 
 localpath:
   frontend:
-    url: ${LOCALPATH_FRONTEND_URL:http://localhost:5173}
+    url: ${FRONTEND_URL}
   cors:
     allowed-origins:
-      - ${LOCALPATH_FRONTEND_URL:http://localhost:5173}
+      - ${FRONTEND_URL}

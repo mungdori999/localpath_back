@@ -10,10 +10,10 @@ import com.mungdori.localpath.application.survey.required.UserSurveyRepository;
 import com.mungdori.localpath.common.constants.Messages;
 import com.mungdori.localpath.common.constants.PassIds;
 import com.mungdori.localpath.domain.member.Member;
-import com.mungdori.localpath.domain.passes.CourseEntity;
-import com.mungdori.localpath.domain.passes.PassEntity;
+import com.mungdori.localpath.domain.passes.Course;
+import com.mungdori.localpath.domain.passes.Pass;
 import com.mungdori.localpath.domain.survey.TravelType;
-import com.mungdori.localpath.domain.survey.UserSurveyEntity;
+import com.mungdori.localpath.domain.survey.UserSurvey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -69,9 +69,9 @@ public class SurveyService {
         EnumMap<TravelType, Integer> scores = scoringService.score(answers);
         TravelType primary = scoringService.primaryType(scores);
 
-        PassEntity oneStep = passRepository.findById(PassIds.ONE_STEP)
+        Pass oneStep = passRepository.findById(PassIds.ONE_STEP)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Messages.PASS_DATA_NOT_FOUND));
-        PassEntity twoStep = passRepository.findById(PassIds.TWO_STEP)
+        Pass twoStep = passRepository.findById(PassIds.TWO_STEP)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Messages.PASS_DATA_NOT_FOUND));
 
         PassRecommendationEngine.Recommendation rec =
@@ -80,11 +80,11 @@ public class SurveyService {
         String answersJson = toJson(answers);
         String scoresJson = toJson(scoresToMap(scores));
 
-        UserSurveyEntity survey = userSurveyRepository.findByMember(member)
+        UserSurvey survey = userSurveyRepository.findByMember(member)
                 .orElse(null);
 
         if (survey == null) {
-            survey = UserSurveyEntity.create(
+            survey = UserSurvey.create(
                     member,
                     answersJson,
                     scoresJson,
@@ -120,7 +120,7 @@ public class SurveyService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.MEMBER_NOT_FOUND));
     }
 
-    private SurveyStatusResponse toStatus(UserSurveyEntity survey) {
+    private SurveyStatusResponse toStatus(UserSurvey survey) {
         return new SurveyStatusResponse(
                 true,
                 parseTypeScores(survey.getScoresJson()),
@@ -128,11 +128,11 @@ public class SurveyService {
         );
     }
 
-    private PassRecommendationResponse buildRecommendation(UserSurveyEntity survey) {
-        PassEntity pass = passRepository.findById(survey.getRecommendedPassId())
+    private PassRecommendationResponse buildRecommendation(UserSurvey survey) {
+        Pass pass = passRepository.findById(survey.getRecommendedPassId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, Messages.RECOMMENDED_PASS_NOT_FOUND));
 
-        CourseEntity course = pass.getCourses().stream()
+        Course course = pass.getCourses().stream()
                 .filter(c -> c.getCourseKey().equals(survey.getRecommendedCourseKey()))
                 .findFirst()
                 .orElse(pass.getCourses().getFirst());
@@ -152,7 +152,7 @@ public class SurveyService {
         );
     }
 
-    private String recommendationReason(PassEntity pass, CourseEntity course, TravelType primary) {
+    private String recommendationReason(Pass pass, Course course, TravelType primary) {
         return String.format(
                 Messages.RECOMMENDATION_REASON,
                 primary.label(),

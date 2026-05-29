@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 @Table(name = "passes")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PassEntity {
+public class Pass {
 
     @Id
     private String id;
@@ -28,9 +28,9 @@ public class PassEntity {
 
     @OneToMany(mappedBy = "pass", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("orderIndex ASC")
-    private final List<CourseEntity> courses = new ArrayList<>();
+    private final List<Course> courses = new ArrayList<>();
 
-    public static PassEntity create(
+    public static Pass create(
             String id,
             String name,
             String tagline,
@@ -39,7 +39,7 @@ public class PassEntity {
             String description,
             String image
     ) {
-        PassEntity pass = new PassEntity();
+        Pass pass = new Pass();
         pass.id = requireNonNull(id);
         pass.name = requireNonNull(name);
         pass.tagline = requireNonNull(tagline);
@@ -50,7 +50,7 @@ public class PassEntity {
         return pass;
     }
 
-    public void addCourse(CourseEntity course) {
+    public void addCourse(Course course) {
         course.attachTo(this);
         this.courses.add(course);
     }

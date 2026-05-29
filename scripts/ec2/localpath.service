@@ -1,0 +1,18 @@
+[Unit]
+Description=Localpath Spring Boot
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/localpath
+ExecStart=/usr/bin/java -jar /home/ubuntu/localpath/app.jar
+Restart=on-failure
+RestartSec=10
+
+# 환경 변수 (또는 /home/ubuntu/localpath/.env 파일로 관리)
+Environment=JWT_SECRET_KEY=change-me
+Environment=SPRING_DOCKER_COMPOSE_ENABLED=false
+
+[Install]
+WantedBy=multi-user.target

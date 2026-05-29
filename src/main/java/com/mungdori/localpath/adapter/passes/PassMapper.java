@@ -3,9 +3,9 @@ package com.mungdori.localpath.adapter.passes;
 import com.mungdori.localpath.adapter.passes.dto.CourseResponse;
 import com.mungdori.localpath.adapter.passes.dto.PassResponse;
 import com.mungdori.localpath.adapter.passes.dto.SpotResponse;
-import com.mungdori.localpath.domain.passes.CourseEntity;
-import com.mungdori.localpath.domain.passes.PassEntity;
-import com.mungdori.localpath.domain.passes.SpotEntity;
+import com.mungdori.localpath.domain.passes.Course;
+import com.mungdori.localpath.domain.passes.Pass;
+import com.mungdori.localpath.domain.passes.Spot;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class PassMapper {
     private PassMapper() {
     }
 
-    public static PassResponse toResponse(PassEntity pass) {
+    public static PassResponse toResponse(Pass pass) {
         List<CourseResponse> courses = pass.getCourses().stream()
                 .map(PassMapper::toResponse)
                 .toList();
@@ -30,7 +30,7 @@ public class PassMapper {
         );
     }
 
-    private static CourseResponse toResponse(CourseEntity course) {
+    private static CourseResponse toResponse(Course course) {
         List<SpotResponse> spots = course.getSpots().stream()
                 .map(PassMapper::toResponse)
                 .toList();
@@ -44,7 +44,7 @@ public class PassMapper {
         );
     }
 
-    private static SpotResponse toResponse(SpotEntity spot) {
+    private static SpotResponse toResponse(Spot spot) {
         return new SpotResponse(
                 spot.getName(),
                 spot.getCategory(),

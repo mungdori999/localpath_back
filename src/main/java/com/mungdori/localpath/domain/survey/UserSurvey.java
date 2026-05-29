@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "user_surveys")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserSurveyEntity {
+public class UserSurvey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class UserSurveyEntity {
     @Column(nullable = false)
     private LocalDateTime completedAt;
 
-    public static UserSurveyEntity create(
+    public static UserSurvey create(
             Member member,
             String answersJson,
             String scoresJson,
@@ -48,7 +48,7 @@ public class UserSurveyEntity {
             String recommendedPassId,
             String recommendedCourseKey
     ) {
-        UserSurveyEntity survey = new UserSurveyEntity();
+        UserSurvey survey = new UserSurvey();
         survey.member = member;
         survey.answersJson = answersJson;
         survey.scoresJson = scoresJson;

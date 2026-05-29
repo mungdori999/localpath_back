@@ -2,8 +2,8 @@ package com.mungdori.localpath.application.survey;
 
 import com.mungdori.localpath.common.constants.Messages;
 import com.mungdori.localpath.common.constants.PassIds;
-import com.mungdori.localpath.domain.passes.CourseEntity;
-import com.mungdori.localpath.domain.passes.PassEntity;
+import com.mungdori.localpath.domain.passes.Course;
+import com.mungdori.localpath.domain.passes.Pass;
 import com.mungdori.localpath.domain.survey.TravelType;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class PassRecommendationEngine {
     ) {
     }
 
-    public Recommendation recommend(PassEntity oneStep, PassEntity twoStep, EnumMap<TravelType, Integer> scores) {
+    public Recommendation recommend(Pass oneStep, Pass twoStep, EnumMap<TravelType, Integer> scores) {
         TravelType primary = scores.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
@@ -33,7 +33,7 @@ public class PassRecommendationEngine {
         int relaxFood = scores.get(TravelType.HEALING) + scores.get(TravelType.FOOD);
 
         String passId = choosePass(primary, adventure, relaxFood, twoStep);
-        PassEntity pass = PassIds.TWO_STEP.equals(passId) ? twoStep : oneStep;
+        Pass pass = PassIds.TWO_STEP.equals(passId) ? twoStep : oneStep;
 
         String courseKey = chooseCourseKey(pass, scores, primary);
         String reason = buildReason(pass, courseKey, primary, adventure, relaxFood);
@@ -41,7 +41,7 @@ public class PassRecommendationEngine {
         return new Recommendation(passId, courseKey, primary, reason);
     }
 
-    private String choosePass(TravelType primary, int adventure, int relaxFood, PassEntity twoStep) {
+    private String choosePass(TravelType primary, int adventure, int relaxFood, Pass twoStep) {
         Set<String> twoStepCourses = courseKeys(twoStep);
 
         if (primary == TravelType.EXPERIENCE || primary == TravelType.NIGHT) {
@@ -59,7 +59,7 @@ public class PassRecommendationEngine {
         return PassIds.ONE_STEP;
     }
 
-    private String chooseCourseKey(PassEntity pass, EnumMap<TravelType, Integer> scores, TravelType primary) {
+    private String chooseCourseKey(Pass pass, EnumMap<TravelType, Integer> scores, TravelType primary) {
         Set<String> available = courseKeys(pass);
 
         if (available.contains(primary.courseKey())) {
@@ -74,14 +74,14 @@ public class PassRecommendationEngine {
                 .orElse(available.iterator().next());
     }
 
-    private Set<String> courseKeys(PassEntity pass) {
+    private Set<String> courseKeys(Pass pass) {
         return pass.getCourses().stream()
-                .map(CourseEntity::getCourseKey)
+                .map(Course::getCourseKey)
                 .collect(Collectors.toSet());
     }
 
     private String buildReason(
-            PassEntity pass,
+            Pass pass,
             String courseKey,
             TravelType primary,
             int adventure,
@@ -89,7 +89,7 @@ public class PassRecommendationEngine {
     ) {
         String courseName = pass.getCourses().stream()
                 .filter(c -> c.getCourseKey().equals(courseKey))
-                .map(CourseEntity::getName)
+                .map(Course::getName)
                 .findFirst()
                 .orElse(Messages.DEFAULT_COURSE_NAME);
 

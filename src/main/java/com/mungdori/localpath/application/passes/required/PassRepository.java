@@ -1,7 +1,7 @@
 package com.mungdori.localpath.application.passes.required;
 
-import com.mungdori.localpath.domain.passes.PassEntity;
+import com.mungdori.localpath.domain.passes.Pass;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PassRepository extends JpaRepository<PassEntity, String> {}
+public interface PassRepository extends JpaRepository<Pass, String> {}
 

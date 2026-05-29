@@ -1,13 +1,13 @@
 package com.mungdori.localpath.application.passes.provided;
 
-import com.mungdori.localpath.domain.passes.PassEntity;
+import com.mungdori.localpath.domain.passes.Pass;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PassService {
-    List<PassEntity> getAllPasses();
+    List<Pass> getAllPasses();
 
-    Optional<PassEntity> getPassById(String passId);
+    Optional<Pass> getPassById(String passId);
 }
 

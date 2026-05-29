@@ -19,6 +19,7 @@ public class LocalpathProperties {
     @Getter
     @Setter
     public static class Frontend {
+
         private String url = "http://localhost:5173";
 
         public String oauthRedirectUrl(String accessToken) {
