@@ -1,0 +1,44 @@
+#
+#  services:
+#    mysql:
+#      image: mysql:8.0
+#
+#      container_name: mysql
+#
+#      environment:
+#        MYSQL_DATABASE: localpath
+#        MYSQL_USER: mungdori
+#        MYSQL_PASSWORD: rlawldyd000@
+#        MYSQL_ROOT_PASSWORD: rlawldyd000@
+#
+#      ports:
+#        - "3307:3306"
+#
+#      volumes:
+#        - mysql-data:/var/lib/mysql
+#
+#      restart: always
+#
+#    spring:
+#      image: 637423616041.dkr.ecr.ap-northeast-2.amazonaws.com/localpath-server
+#
+#      container_name: springboot
+#
+#      depends_on:
+#        - mysql
+#
+#      ports:
+#        - "8080:8080"
+#
+#      environment:
+#        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/localpath?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#        SPRING_DATASOURCE_USERNAME: mungdori
+#        SPRING_DATASOURCE_PASSWORD: rlawldyd000@
+#
+#        SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#
+#      restart: always
+#
+#  volumes:
+#    mysql-data:
+#

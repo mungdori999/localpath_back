@@ -68,7 +68,11 @@ public class SecurityConfig {
                         ApiPaths.PASSES_PATTERN,
                         ApiPaths.LOGOUT
                 ).permitAll()
-                .requestMatchers(ApiPaths.SURVEY_PATTERN).authenticated()
+                .requestMatchers(
+                        ApiPaths.SURVEY_PATTERN,
+                        ApiPaths.BADGES_PATTERN,
+                        ApiPaths.VISITS_PATTERN
+                ).authenticated()
                 .anyRequest().authenticated());
 
         http.sessionManagement((session) -> session

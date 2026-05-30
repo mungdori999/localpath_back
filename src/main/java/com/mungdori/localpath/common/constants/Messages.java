@@ -18,6 +18,10 @@ public final class Messages {
     public static final String RECOMMENDATION_REASON_ADVENTURE =
             "%s 성향에 맞춰 %s의 「%s」를 추천해요. 체험·야경까지 즐길 수 있는 동선이에요.";
 
+    public static final String SPOT_NAME_REQUIRED = "장소 이름이 필요합니다";
+    public static final String SPOT_NOT_FOUND = "장소를 찾을 수 없습니다";
+    public static final String VISIT_TOO_FAR = "장소 근처에서만 인증할 수 있습니다";
+
     private Messages() {
     }
 }

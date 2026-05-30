@@ -11,6 +11,10 @@ public final class ApiPaths {
     public static final String LOGOUT = API + "/logout";
     public static final String SURVEY_PATTERN = API + "/survey/**";
     public static final String SURVEY = API + "/survey";
+    public static final String BADGES_PATTERN = API + "/badges/**";
+    public static final String BADGES = API + "/badges";
+    public static final String VISITS_PATTERN = API + "/visits/**";
+    public static final String VISITS = API + "/visits";
 
     private ApiPaths() {
     }
