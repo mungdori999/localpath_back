@@ -76,7 +76,8 @@ public class SecurityConfig {
                 .requestMatchers(
                         ApiPaths.SURVEY_PATTERN,
                         ApiPaths.BADGES_PATTERN,
-                        ApiPaths.VISITS_PATTERN
+                        ApiPaths.VISITS_PATTERN,
+                        ApiPaths.MY_PASSES_PATTERN
                 ).authenticated()
                 .anyRequest().authenticated());
 

@@ -1,5 +1,6 @@
 package com.mungdori.localpath.application.auth;
 
+import com.mungdori.localpath.application.badges.WelcomeBadgeService;
 import com.mungdori.localpath.application.member.required.MemberRepository;
 import com.mungdori.localpath.common.constants.AuthConstants;
 import com.mungdori.localpath.domain.auth.CustomOAuth2User;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final MemberRepository memberRepository;
+    private final WelcomeBadgeService welcomeBadgeService;
 
 
     @Override
@@ -51,6 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             Member register
                     = Member.register(new MemberRegisterRequest(oAuth2Response.getEmail(), oAuth2Response.getName()));
             memberRepository.save(register);
+            welcomeBadgeService.grantWelcomeBadge(register);
 
             OAuth2ResponseUser user
                     = new OAuth2ResponseUser(AuthConstants.ROLE_USER, register.getEmail(), register.getName());

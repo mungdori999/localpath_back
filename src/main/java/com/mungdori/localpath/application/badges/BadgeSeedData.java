@@ -10,6 +10,15 @@ public final class BadgeSeedData {
     }
 
     public static List<Badge> badges() {
+        Badge welcome = Badge.create(
+                "welcome-member",
+                "가입 축하",
+                "로컬패스에 오신 것을 환영합니다",
+                "🎉",
+                "전체",
+                -1
+        );
+
         Badge mangridanCafe = Badge.create(
                 "mangridan-cafe-master",
                 "망리단길 카페 마스터",
@@ -87,6 +96,7 @@ public final class BadgeSeedData {
         mangwonCulture.addRequirement("문화비축창");
 
         return List.of(
+                welcome,
                 mangridanCafe,
                 mangridanFood,
                 mangridanHealing,

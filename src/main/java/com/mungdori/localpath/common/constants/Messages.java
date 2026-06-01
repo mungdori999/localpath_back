@@ -22,6 +22,9 @@ public final class Messages {
     public static final String SPOT_NOT_FOUND = "장소를 찾을 수 없습니다";
     public static final String VISIT_TOO_FAR = "장소 근처에서만 인증할 수 있습니다";
 
+    public static final String PASS_NOT_FOUND = "패스를 찾을 수 없습니다";
+    public static final String TICKET_NOT_FOUND = "이용권을 찾을 수 없습니다";
+
     private Messages() {
     }
 }
