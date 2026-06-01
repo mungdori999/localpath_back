@@ -66,7 +66,8 @@ public class SecurityConfig {
                         ApiPaths.AUTH_PATTERN,
                         ApiPaths.REISSUE,
                         ApiPaths.PASSES_PATTERN,
-                        ApiPaths.LOGOUT
+                        ApiPaths.LOGOUT,
+                        ApiPaths.HEALTH
                 ).permitAll()
                 .requestMatchers(
                         ApiPaths.SURVEY_PATTERN,

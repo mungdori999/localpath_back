@@ -15,6 +15,7 @@ public final class ApiPaths {
     public static final String BADGES = API + "/badges";
     public static final String VISITS_PATTERN = API + "/visits/**";
     public static final String VISITS = API + "/visits";
+    public static final String HEALTH = API + "/health";
 
     private ApiPaths() {
     }
