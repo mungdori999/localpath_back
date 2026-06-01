@@ -6,6 +6,7 @@ import com.mungdori.localpath.application.member.required.MemberRepository;
 import com.mungdori.localpath.application.passes.required.MemberPassTicketRepository;
 import com.mungdori.localpath.application.passes.required.PassRepository;
 import com.mungdori.localpath.common.constants.Messages;
+import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.member.Member;
 import com.mungdori.localpath.domain.passes.MemberPassTicket;
 import com.mungdori.localpath.domain.passes.Pass;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class MemberPassService {
         Pass pass = passRepository.findById(passId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.PASS_NOT_FOUND));
 
-        LocalDateTime purchasedAt = LocalDateTime.now();
+        var purchasedAt = KoreaTime.nowLocal();
         List<MemberPassTicket> tickets = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             tickets.add(MemberPassTicket.purchase(member, pass, purchasedAt));
@@ -70,8 +70,8 @@ public class MemberPassService {
                 pass.getName(),
                 pass.getImage(),
                 ticket.getUnitPrice(),
-                ticket.getPurchasedAt(),
-                ticket.getExpiresAt(),
+                KoreaTime.toOffset(ticket.getPurchasedAt()),
+                KoreaTime.toOffset(ticket.getExpiresAt()),
                 ticket.isValid()
         );
     }

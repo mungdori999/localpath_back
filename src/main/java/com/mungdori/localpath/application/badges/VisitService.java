@@ -7,6 +7,7 @@ import com.mungdori.localpath.application.badges.required.SpotVisitRepository;
 import com.mungdori.localpath.application.member.required.MemberRepository;
 import com.mungdori.localpath.application.passes.required.SpotRepository;
 import com.mungdori.localpath.common.constants.Messages;
+import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.badges.Badge;
 import com.mungdori.localpath.domain.badges.MemberBadge;
 import com.mungdori.localpath.domain.badges.SpotVisit;
@@ -52,8 +53,13 @@ public class VisitService {
             LocalDateTime verifiedAt = spotVisitRepository
                     .findByMemberAndSpotName(member, spot.getName())
                     .map(SpotVisit::getVerifiedAt)
-                    .orElse(LocalDateTime.now());
-            return new VerifyVisitResponse(spot.getName(), verifiedAt, true, List.of());
+                    .orElse(KoreaTime.nowLocal());
+            return new VerifyVisitResponse(
+                    spot.getName(),
+                    KoreaTime.toOffset(verifiedAt),
+                    true,
+                    List.of()
+            );
         }
 
         SpotVisit visit = SpotVisit.create(member, spot.getName());
@@ -63,7 +69,7 @@ public class VisitService {
 
         return new VerifyVisitResponse(
                 spot.getName(),
-                visit.getVerifiedAt(),
+                KoreaTime.toOffset(visit.getVerifiedAt()),
                 false,
                 newlyUnlocked
         );

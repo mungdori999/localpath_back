@@ -1,6 +1,6 @@
 package com.mungdori.localpath.adapter.passes.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record MemberPassTicketResponse(
         String ticketId,
@@ -8,8 +8,8 @@ public record MemberPassTicketResponse(
         String passName,
         String passImage,
         int unitPrice,
-        LocalDateTime purchasedAt,
-        LocalDateTime expiresAt,
+        OffsetDateTime purchasedAt,
+        OffsetDateTime expiresAt,
         boolean valid
 ) {
 }

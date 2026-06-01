@@ -1,5 +1,6 @@
 package com.mungdori.localpath.domain.badges;
 
+import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -34,7 +35,7 @@ public class SpotVisit {
         SpotVisit visit = new SpotVisit();
         visit.member = requireNonNull(member);
         visit.spotName = requireNonNull(spotName);
-        visit.verifiedAt = LocalDateTime.now();
+        visit.verifiedAt = KoreaTime.nowLocal();
         return visit;
     }
 }

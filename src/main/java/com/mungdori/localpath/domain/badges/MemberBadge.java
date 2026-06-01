@@ -1,5 +1,6 @@
 package com.mungdori.localpath.domain.badges;
 
+import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,7 +38,7 @@ public class MemberBadge {
         MemberBadge memberBadge = new MemberBadge();
         memberBadge.member = requireNonNull(member);
         memberBadge.badge = requireNonNull(badge);
-        memberBadge.unlockedAt = LocalDateTime.now();
+        memberBadge.unlockedAt = KoreaTime.nowLocal();
         return memberBadge;
     }
 }

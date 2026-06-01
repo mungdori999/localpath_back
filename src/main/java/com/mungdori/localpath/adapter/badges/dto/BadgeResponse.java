@@ -1,6 +1,6 @@
 package com.mungdori.localpath.adapter.badges.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public record BadgeResponse(
@@ -10,7 +10,7 @@ public record BadgeResponse(
         String emoji,
         String region,
         boolean unlocked,
-        LocalDateTime unlockedAt,
+        OffsetDateTime unlockedAt,
         List<BadgeRequirementResponse> requirements,
         int completedCount,
         int totalCount

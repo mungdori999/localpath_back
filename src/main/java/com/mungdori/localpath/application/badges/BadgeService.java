@@ -7,6 +7,7 @@ import com.mungdori.localpath.application.badges.required.MemberBadgeRepository;
 import com.mungdori.localpath.application.badges.required.SpotVisitRepository;
 import com.mungdori.localpath.application.member.required.MemberRepository;
 import com.mungdori.localpath.common.constants.Messages;
+import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.badges.Badge;
 import com.mungdori.localpath.domain.badges.MemberBadge;
 import com.mungdori.localpath.domain.badges.SpotVisit;
@@ -53,7 +54,7 @@ public class BadgeService {
         return spotVisitRepository.findByMember(member).stream()
                 .map(v -> new com.mungdori.localpath.adapter.badges.dto.VisitResponse(
                         v.getSpotName(),
-                        v.getVerifiedAt()
+                        KoreaTime.toOffset(v.getVerifiedAt())
                 ))
                 .toList();
     }
@@ -81,7 +82,7 @@ public class BadgeService {
                 badge.getEmoji(),
                 badge.getRegion(),
                 unlocked,
-                unlockedAtByBadgeId.get(badge.getId()),
+                KoreaTime.toOffset(unlockedAtByBadgeId.get(badge.getId())),
                 requirements,
                 completedCount,
                 totalCount

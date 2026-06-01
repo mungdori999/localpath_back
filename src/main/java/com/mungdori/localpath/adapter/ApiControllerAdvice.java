@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import com.mungdori.localpath.common.time.KoreaTime;
 
 @ControllerAdvice
 public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
@@ -20,7 +20,7 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
     private ProblemDetail getProblemDetail(HttpStatus status, Exception exception) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, exception.getMessage());
 
-        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        problemDetail.setProperty("timestamp", KoreaTime.toOffset(KoreaTime.nowLocal()));
         problemDetail.setProperty("exception", exception.getClass().getSimpleName());
 
         return problemDetail;

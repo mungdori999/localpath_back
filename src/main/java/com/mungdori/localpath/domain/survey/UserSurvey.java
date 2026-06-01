@@ -1,5 +1,6 @@
 package com.mungdori.localpath.domain.survey;
 
+import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -55,7 +56,7 @@ public class UserSurvey {
         survey.primaryType = primaryType.name();
         survey.recommendedPassId = recommendedPassId;
         survey.recommendedCourseKey = recommendedCourseKey;
-        survey.completedAt = LocalDateTime.now();
+        survey.completedAt = KoreaTime.nowLocal();
         return survey;
     }
 
@@ -71,6 +72,6 @@ public class UserSurvey {
         this.primaryType = primaryType.name();
         this.recommendedPassId = recommendedPassId;
         this.recommendedCourseKey = recommendedCourseKey;
-        this.completedAt = LocalDateTime.now();
+        this.completedAt = KoreaTime.nowLocal();
     }
 }

@@ -1,5 +1,6 @@
 package com.mungdori.localpath.domain.passes;
 
+import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -49,6 +50,6 @@ public class MemberPassTicket {
     }
 
     public boolean isValid() {
-        return LocalDateTime.now().isBefore(expiresAt);
+        return KoreaTime.nowLocal().isBefore(expiresAt);
     }
 }

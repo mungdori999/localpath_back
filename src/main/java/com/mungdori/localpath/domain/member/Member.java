@@ -3,6 +3,7 @@ package com.mungdori.localpath.domain.member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import com.mungdori.localpath.common.time.KoreaTime;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class Member {
 
         member.email = requireNonNull(createRequest.email());
         member.name = requireNonNull(createRequest.name());
-        member.registeredAt = LocalDateTime.now();
+        member.registeredAt = KoreaTime.nowLocal();
 
         return member;
 
