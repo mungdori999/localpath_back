@@ -1,6 +1,7 @@
 package com.mungdori.localpath.adapter;
 
 import com.mungdori.localpath.adapter.auth.filter.CustomLogoutFilter;
+import com.mungdori.localpath.common.auth.AuthCookieWriter;
 import com.mungdori.localpath.adapter.auth.filter.CustomSuccessHandler;
 import com.mungdori.localpath.adapter.auth.filter.JWTFilter;
 import com.mungdori.localpath.adapter.config.LocalpathProperties;
@@ -29,17 +30,20 @@ public class SecurityConfig {
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
     private final LocalpathProperties localpathProperties;
+    private final AuthCookieWriter authCookieWriter;
 
     public SecurityConfig(
             CustomOAuth2UserService customOAuth2UserService,
             CustomSuccessHandler customSuccessHandler,
             JWTUtil jwtUtil,
-            LocalpathProperties localpathProperties
+            LocalpathProperties localpathProperties,
+            AuthCookieWriter authCookieWriter
     ) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.jwtUtil = jwtUtil;
         this.localpathProperties = localpathProperties;
+        this.authCookieWriter = authCookieWriter;
     }
 
     @Bean
@@ -53,7 +57,7 @@ public class SecurityConfig {
         http.httpBasic((auth) -> auth.disable());
 
         http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new CustomLogoutFilter(jwtUtil), LogoutFilter.class);
+        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, authCookieWriter), LogoutFilter.class);
 
         http.oauth2Login((oauth2) -> oauth2
                 .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig

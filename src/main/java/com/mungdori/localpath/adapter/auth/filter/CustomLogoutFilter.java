@@ -1,7 +1,7 @@
 package com.mungdori.localpath.adapter.auth.filter;
 
 import com.mungdori.localpath.application.auth.JWTUtil;
-import com.mungdori.localpath.common.auth.AuthCookieFactory;
+import com.mungdori.localpath.common.auth.AuthCookieWriter;
 import com.mungdori.localpath.common.constants.ApiPaths;
 import com.mungdori.localpath.common.constants.AuthConstants;
 import com.mungdori.localpath.common.constants.JwtClaims;
@@ -21,9 +21,11 @@ import java.util.Arrays;
 public class CustomLogoutFilter extends GenericFilterBean {
 
     private final JWTUtil jwtUtil;
+    private final AuthCookieWriter authCookieWriter;
 
-    public CustomLogoutFilter(JWTUtil jwtUtil) {
+    public CustomLogoutFilter(JWTUtil jwtUtil, AuthCookieWriter authCookieWriter) {
         this.jwtUtil = jwtUtil;
+        this.authCookieWriter = authCookieWriter;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
-        response.addCookie(AuthCookieFactory.clearRefreshCookie());
+        authCookieWriter.clearRefreshCookie(response);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 

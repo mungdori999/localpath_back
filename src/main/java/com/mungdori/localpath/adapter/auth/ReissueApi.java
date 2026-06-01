@@ -1,7 +1,7 @@
 package com.mungdori.localpath.adapter.auth;
 
 import com.mungdori.localpath.application.auth.JWTUtil;
-import com.mungdori.localpath.common.auth.AuthCookieFactory;
+import com.mungdori.localpath.common.auth.AuthCookieWriter;
 import com.mungdori.localpath.common.constants.ApiPaths;
 import com.mungdori.localpath.common.constants.AuthConstants;
 import com.mungdori.localpath.common.constants.JwtClaims;
@@ -26,6 +26,7 @@ import java.util.Map;
 public class ReissueApi {
 
     private final JWTUtil jwtUtil;
+    private final AuthCookieWriter authCookieWriter;
 
     @Value("${spring.jwt.accessToken-expire-length}")
     private long accessExpireLong;
@@ -59,7 +60,7 @@ public class ReissueApi {
         String newRefresh = jwtUtil.createJwt(JwtClaims.REFRESH, name, role, email, refreshExpireLong);
 
         response.setHeader(AuthConstants.ACCESS_HEADER, newAccess);
-        response.addCookie(AuthCookieFactory.refreshCookie(newRefresh, (int) refreshExpireLong));
+        authCookieWriter.addRefreshCookie(response, newRefresh, (int) refreshExpireLong);
         return ResponseEntity.ok(Map.of(JwtClaims.ACCESS_TOKEN_RESPONSE_KEY, newAccess));
     }
 

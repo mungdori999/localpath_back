@@ -2,7 +2,7 @@ package com.mungdori.localpath.adapter.auth.filter;
 
 import com.mungdori.localpath.adapter.config.LocalpathProperties;
 import com.mungdori.localpath.application.auth.JWTUtil;
-import com.mungdori.localpath.common.auth.AuthCookieFactory;
+import com.mungdori.localpath.common.auth.AuthCookieWriter;
 import com.mungdori.localpath.common.constants.JwtClaims;
 import com.mungdori.localpath.domain.auth.CustomOAuth2User;
 import jakarta.servlet.ServletException;
@@ -20,6 +20,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JWTUtil jwtUtil;
     private final LocalpathProperties localpathProperties;
+    private final AuthCookieWriter authCookieWriter;
 
     @Value("${spring.jwt.accessToken-expire-length}")
     private long accessExpireLong;
@@ -27,9 +28,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${spring.jwt.refresh-expire-length}")
     private long refreshExpireLong;
 
-    public CustomSuccessHandler(JWTUtil jwtUtil, LocalpathProperties localpathProperties) {
+    public CustomSuccessHandler(
+            JWTUtil jwtUtil,
+            LocalpathProperties localpathProperties,
+            AuthCookieWriter authCookieWriter
+    ) {
         this.jwtUtil = jwtUtil;
         this.localpathProperties = localpathProperties;
+        this.authCookieWriter = authCookieWriter;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String access = jwtUtil.createJwt(JwtClaims.ACCESS, name, role, email, accessExpireLong);
         String refresh = jwtUtil.createJwt(JwtClaims.REFRESH, name, role, email, refreshExpireLong);
 
-        response.addCookie(AuthCookieFactory.refreshCookie(refresh, (int) refreshExpireLong));
+        authCookieWriter.addRefreshCookie(response, refresh, (int) refreshExpireLong);
         response.sendRedirect(localpathProperties.getFrontend().oauthRedirectUrl(access));
     }
 }
