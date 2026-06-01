@@ -6,7 +6,8 @@ public record SpotResponse(
         String address,
         double lat,
         double lng,
-        String note
+        String note,
+        SpotCurationResponse curation
 ) {
 }
 
