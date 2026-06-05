@@ -6,6 +6,7 @@ import com.mungdori.localpath.application.member.required.MemberRepository;
 import com.mungdori.localpath.application.passes.required.MemberPassTicketRepository;
 import com.mungdori.localpath.application.passes.required.PassRepository;
 import com.mungdori.localpath.common.constants.Messages;
+import com.mungdori.localpath.common.constants.SpendingFocusIds;
 import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.member.Member;
 import com.mungdori.localpath.domain.passes.MemberPassTicket;
@@ -44,7 +45,16 @@ public class MemberPassService {
     }
 
     @Transactional
-    public PurchasePassResponse purchase(String memberEmail, String passId, int quantity) {
+    public PurchasePassResponse purchase(
+            String memberEmail,
+            String passId,
+            String spendingFocus,
+            int quantity
+    ) {
+        if (!SpendingFocusIds.isValid(spendingFocus)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "유효하지 않은 집중형 패스입니다.");
+        }
+
         Member member = findMember(memberEmail);
         Pass pass = passRepository.findById(passId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, Messages.PASS_NOT_FOUND));
@@ -52,7 +62,7 @@ public class MemberPassService {
         var purchasedAt = KoreaTime.nowLocal();
         List<MemberPassTicket> tickets = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
-            tickets.add(MemberPassTicket.purchase(member, pass, purchasedAt));
+            tickets.add(MemberPassTicket.purchase(member, pass, purchasedAt, spendingFocus));
         }
         memberPassTicketRepository.saveAll(tickets);
 
@@ -69,6 +79,7 @@ public class MemberPassService {
                 pass.getId(),
                 pass.getName(),
                 pass.getImage(),
+                ticket.getSpendingFocus(),
                 ticket.getUnitPrice(),
                 KoreaTime.toOffset(ticket.getPurchasedAt()),
                 KoreaTime.toOffset(ticket.getExpiresAt()),

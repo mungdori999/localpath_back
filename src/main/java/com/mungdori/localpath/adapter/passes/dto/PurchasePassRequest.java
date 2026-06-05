@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record PurchasePassRequest(
         @NotBlank String passId,
+        @NotBlank String spendingFocus,
         @Min(1) @Max(20) int quantity
 ) {
 }

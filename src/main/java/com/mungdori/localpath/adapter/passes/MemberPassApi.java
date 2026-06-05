@@ -34,6 +34,7 @@ public class MemberPassApi {
         return memberPassService.purchase(
                 AuthorizationUtil.requireEmail(),
                 request.passId(),
+                request.spendingFocus(),
                 request.quantity()
         );
     }

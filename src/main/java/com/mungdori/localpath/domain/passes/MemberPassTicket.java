@@ -38,7 +38,16 @@ public class MemberPassTicket {
 
     private LocalDateTime expiresAt;
 
-    public static MemberPassTicket purchase(Member member, Pass pass, LocalDateTime purchasedAt) {
+    /** route1 | route2 | route3 — 결제 금액 사용 비율(데모 표시용) */
+    @Column(length = 16)
+    private String spendingFocus;
+
+    public static MemberPassTicket purchase(
+            Member member,
+            Pass pass,
+            LocalDateTime purchasedAt,
+            String spendingFocus
+    ) {
         MemberPassTicket ticket = new MemberPassTicket();
         ticket.ticketId = UUID.randomUUID().toString();
         ticket.member = requireNonNull(member);
@@ -46,6 +55,7 @@ public class MemberPassTicket {
         ticket.unitPrice = pass.getPrice();
         ticket.purchasedAt = requireNonNull(purchasedAt);
         ticket.expiresAt = purchasedAt.plusHours(VALID_HOURS);
+        ticket.spendingFocus = requireNonNull(spendingFocus);
         return ticket;
     }
 

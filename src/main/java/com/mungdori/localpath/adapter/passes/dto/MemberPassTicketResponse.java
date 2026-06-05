@@ -7,6 +7,7 @@ public record MemberPassTicketResponse(
         String passId,
         String passName,
         String passImage,
+        String spendingFocus,
         int unitPrice,
         OffsetDateTime purchasedAt,
         OffsetDateTime expiresAt,
