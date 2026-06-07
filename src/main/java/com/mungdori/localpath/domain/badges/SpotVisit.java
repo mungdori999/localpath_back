@@ -29,12 +29,17 @@ public class SpotVisit {
     private Member member;
 
     private String spotName;
+
+    @Column(length = 32)
+    private String spotCategory;
+
     private LocalDateTime verifiedAt;
 
-    public static SpotVisit create(Member member, String spotName) {
+    public static SpotVisit create(Member member, String spotName, String spotCategory) {
         SpotVisit visit = new SpotVisit();
         visit.member = requireNonNull(member);
         visit.spotName = requireNonNull(spotName);
+        visit.spotCategory = requireNonNull(spotCategory);
         visit.verifiedAt = KoreaTime.nowLocal();
         return visit;
     }

@@ -34,6 +34,7 @@ public class VisitService {
     private final BadgeRepository badgeRepository;
     private final MemberBadgeRepository memberBadgeRepository;
     private final MemberRepository memberRepository;
+    private final VisitProgressEvaluator visitProgressEvaluator;
 
     @Transactional
     public VerifyVisitResponse verifyVisit(String memberEmail, String spotName, double lat, double lng) {
@@ -62,7 +63,7 @@ public class VisitService {
             );
         }
 
-        SpotVisit visit = SpotVisit.create(member, spot.getName());
+        SpotVisit visit = SpotVisit.create(member, spot.getName(), spot.getCategory());
         spotVisitRepository.save(visit);
 
         List<String> newlyUnlocked = unlockEligibleBadges(member);
@@ -84,17 +85,21 @@ public class VisitService {
         List<String> newlyUnlocked = new ArrayList<>();
 
         for (Badge badge : badges) {
+            if (!badge.isVisitBased()) {
+                continue;
+            }
+            if (BadgeSeedData.DEPRECATED_EXPLORER_KEY.equals(badge.getBadgeKey())) {
+                continue;
+            }
             if (memberBadgeRepository.existsByMemberAndBadge(member, badge)) {
                 continue;
             }
-
-            boolean allMet = badge.getRequirements().stream()
-                    .allMatch(req -> visitedSpotNames.contains(req.getSpotName()));
-
-            if (allMet) {
-                memberBadgeRepository.save(MemberBadge.unlock(member, badge));
-                newlyUnlocked.add(badge.getBadgeKey());
+            if (!visitProgressEvaluator.isBadgeUnlocked(badge, visitedSpotNames)) {
+                continue;
             }
+
+            memberBadgeRepository.save(MemberBadge.unlock(member, badge));
+            newlyUnlocked.add(badge.getBadgeKey());
         }
 
         return newlyUnlocked;

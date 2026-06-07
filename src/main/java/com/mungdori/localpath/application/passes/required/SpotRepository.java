@@ -11,4 +11,6 @@ public interface SpotRepository extends JpaRepository<Spot, Long> {
     Optional<Spot> findFirstByName(String name);
 
     List<Spot> findByName(String name);
+
+    List<Spot> findAllByOrderByNameAsc();
 }

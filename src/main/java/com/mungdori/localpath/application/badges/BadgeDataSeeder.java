@@ -20,10 +20,38 @@ public class BadgeDataSeeder implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) {
         for (Badge seedBadge : BadgeSeedData.badges()) {
-            if (badgeRepository.findByBadgeKey(seedBadge.getBadgeKey()).isPresent()) {
-                continue;
-            }
-            badgeRepository.save(seedBadge);
+            badgeRepository.findByBadgeKey(seedBadge.getBadgeKey())
+                    .ifPresentOrElse(
+                            existing -> syncBadge(existing, seedBadge),
+                            () -> badgeRepository.save(seedBadge)
+                    );
         }
+    }
+
+    private void syncBadge(Badge existing, Badge seedBadge) {
+        if (seedBadge.isVisitBased()) {
+            existing.updateVisitMetadata(
+                    seedBadge.getName(),
+                    seedBadge.getDescription(),
+                    seedBadge.getEmoji(),
+                    seedBadge.getImage(),
+                    seedBadge.getRegion(),
+                    seedBadge.getOrderIndex()
+            );
+            existing.replaceRequirements(
+                    seedBadge.getRequirements().stream()
+                            .map(req -> req.getSpotName())
+                            .toList()
+            );
+            return;
+        }
+
+        existing.updateWelcomeMetadata(
+                seedBadge.getName(),
+                seedBadge.getDescription(),
+                seedBadge.getImage(),
+                seedBadge.getRegion(),
+                seedBadge.getOrderIndex()
+        );
     }
 }

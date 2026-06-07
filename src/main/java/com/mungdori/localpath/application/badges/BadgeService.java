@@ -2,6 +2,7 @@ package com.mungdori.localpath.application.badges;
 
 import com.mungdori.localpath.adapter.badges.dto.BadgeRequirementResponse;
 import com.mungdori.localpath.adapter.badges.dto.BadgeResponse;
+import com.mungdori.localpath.adapter.badges.dto.BadgeVisitProgressResponse;
 import com.mungdori.localpath.application.badges.required.BadgeRepository;
 import com.mungdori.localpath.application.badges.required.MemberBadgeRepository;
 import com.mungdori.localpath.application.badges.required.SpotVisitRepository;
@@ -10,7 +11,6 @@ import com.mungdori.localpath.common.constants.Messages;
 import com.mungdori.localpath.common.time.KoreaTime;
 import com.mungdori.localpath.domain.badges.Badge;
 import com.mungdori.localpath.domain.badges.MemberBadge;
-import com.mungdori.localpath.domain.badges.SpotVisit;
 import com.mungdori.localpath.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,18 +32,19 @@ public class BadgeService {
     private final MemberBadgeRepository memberBadgeRepository;
     private final SpotVisitRepository spotVisitRepository;
     private final MemberRepository memberRepository;
+    private final VisitProgressEvaluator visitProgressEvaluator;
 
     @Transactional(readOnly = true)
     public List<BadgeResponse> getBadges(String memberEmail) {
         Member member = findMember(memberEmail);
-        List<Badge> badges = badgeRepository.findAllWithRequirements();
         Set<String> visitedSpotNames = spotVisitRepository.findByMember(member).stream()
-                .map(SpotVisit::getSpotName)
+                .map(v -> v.getSpotName())
                 .collect(Collectors.toSet());
         Map<Long, LocalDateTime> unlockedAtByBadgeId = memberBadgeRepository.findByMember(member).stream()
                 .collect(Collectors.toMap(mb -> mb.getBadge().getId(), MemberBadge::getUnlockedAt));
 
-        return badges.stream()
+        return badgeRepository.findAllWithRequirements().stream()
+                .filter(badge -> !BadgeSeedData.DEPRECATED_EXPLORER_KEY.equals(badge.getBadgeKey()))
                 .map(badge -> toResponse(badge, visitedSpotNames, unlockedAtByBadgeId))
                 .toList();
     }
@@ -64,28 +65,45 @@ public class BadgeService {
             Set<String> visitedSpotNames,
             Map<Long, LocalDateTime> unlockedAtByBadgeId
     ) {
-        List<BadgeRequirementResponse> requirements = badge.getRequirements().stream()
-                .map(req -> new BadgeRequirementResponse(
-                        req.getSpotName(),
-                        visitedSpotNames.contains(req.getSpotName())
-                ))
-                .toList();
+        boolean unlocked = unlockedAtByBadgeId.containsKey(badge.getId());
+        BadgeVisitProgressResponse visitProgress = null;
+        List<BadgeRequirementResponse> requirements;
+
+        if (badge.isVisitBased()) {
+            visitProgress = visitProgressEvaluator.progressForBadge(badge, visitedSpotNames);
+            requirements = badge.getRequirements().stream()
+                    .map(req -> new BadgeRequirementResponse(
+                            req.getSpotName(),
+                            visitProgressEvaluator.categoryForSpotName(req.getSpotName()),
+                            visitedSpotNames.contains(req.getSpotName())
+                    ))
+                    .toList();
+        } else {
+            requirements = badge.getRequirements().stream()
+                    .map(req -> new BadgeRequirementResponse(
+                            req.getSpotName(),
+                            null,
+                            visitedSpotNames.contains(req.getSpotName())
+                    ))
+                    .toList();
+        }
 
         int completedCount = (int) requirements.stream().filter(BadgeRequirementResponse::completed).count();
         int totalCount = requirements.size();
-        boolean unlocked = unlockedAtByBadgeId.containsKey(badge.getId());
 
         return new BadgeResponse(
                 badge.getBadgeKey(),
                 badge.getName(),
                 badge.getDescription(),
                 badge.getEmoji(),
+                badge.getImage(),
                 badge.getRegion(),
                 unlocked,
                 KoreaTime.toOffset(unlockedAtByBadgeId.get(badge.getId())),
                 requirements,
                 completedCount,
-                totalCount
+                totalCount,
+                visitProgress
         );
     }
 

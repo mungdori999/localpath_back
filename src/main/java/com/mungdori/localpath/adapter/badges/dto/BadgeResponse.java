@@ -8,11 +8,13 @@ public record BadgeResponse(
         String name,
         String description,
         String emoji,
+        String image,
         String region,
         boolean unlocked,
         OffsetDateTime unlockedAt,
         List<BadgeRequirementResponse> requirements,
         int completedCount,
-        int totalCount
+        int totalCount,
+        BadgeVisitProgressResponse visitProgress
 ) {
 }

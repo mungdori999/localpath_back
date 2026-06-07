@@ -30,7 +30,7 @@ public class PassSeedData {
                 0
         );
         oneHealing.addSpot(Spot.create(
-                "어노브 ANOVE",
+                "어노브 ANOVE - 망리단길점",
                 "힐링 카페",
                 "서울 마포구 희우정로10길 5",
                 37.556447,
@@ -39,7 +39,7 @@ public class PassSeedData {
                 0
         ));
         oneHealing.addSpot(Spot.create(
-                "블루보틀 망원",
+                "블루보틀 - 망리단길점",
                 "힐링 카페",
                 "서울 마포구 월드컵로10길 62",
                 37.555954,
@@ -48,7 +48,7 @@ public class PassSeedData {
                 1
         ));
         oneHealing.addSpot(Spot.create(
-                "옥동식",
+                "옥동식 - 망리단길점",
                 "분위기 식당",
                 "서울 마포구 포은로 26",
                 37.556851,
@@ -66,16 +66,16 @@ public class PassSeedData {
                 1
         );
         oneFood.addSpot(Spot.create(
-                "망원시장",
+                "호돌이 닭강정 - 망원시장점",
                 "시장",
                 "서울 마포구 망원동 414-3",
                 37.556347,
                 126.905681,
-                "닭강정·떡볶이·빈대떡 등 시장 먹거리",
+                "망원시장 대표 닭강정, 테이크아웃 인기",
                 0
         ));
         oneFood.addSpot(Spot.create(
-                "할매순대국 망원본점",
+                "할매순대국 - 망원시장점",
                 "맛집",
                 "서울 마포구 망원로 59",
                 37.556102,
@@ -84,7 +84,7 @@ public class PassSeedData {
                 1
         ));
         oneFood.addSpot(Spot.create(
-                "진미식당",
+                "진미식당 - 망원점",
                 "맛집",
                 "서울 마포구 망원로10길 7",
                 37.556218,
@@ -112,7 +112,7 @@ public class PassSeedData {
                 0
         );
         twoHealing.addSpot(Spot.create(
-                "어노브 ANOVE",
+                "어노브 ANOVE - 망리단길점",
                 "힐링 카페",
                 "서울 마포구 희우정로10길 5",
                 37.556447,
@@ -121,7 +121,7 @@ public class PassSeedData {
                 0
         ));
         twoHealing.addSpot(Spot.create(
-                "블루보틀 망원",
+                "블루보틀 - 망리단길점",
                 "힐링 카페",
                 "서울 마포구 월드컵로10길 62",
                 37.555954,
@@ -130,7 +130,7 @@ public class PassSeedData {
                 1
         ));
         twoHealing.addSpot(Spot.create(
-                "카페모토",
+                "카페모토 - 망리단길점",
                 "힐링 카페",
                 "서울 마포구 포은로8길 57",
                 37.556308,
@@ -139,13 +139,31 @@ public class PassSeedData {
                 2
         ));
         twoHealing.addSpot(Spot.create(
-                "옥동식",
+                "옥동식 - 망리단길점",
                 "분위기 식당",
                 "서울 마포구 포은로 26",
                 37.556851,
                 126.902069,
                 "망원 대표 한식 코스요리",
                 3
+        ));
+        twoHealing.addSpot(Spot.create(
+                "삼봉식당 - 망리단길점",
+                "맛집",
+                "서울 마포구 포은로8길 32",
+                37.556521,
+                126.902341,
+                "망리단길 골목 일식당, 점심 웨이팅 인기",
+                4
+        ));
+        twoHealing.addSpot(Spot.create(
+                "연어삼촌 - 망리단길점",
+                "맛집",
+                "서울 마포구 월드컵로10길 48",
+                37.556178,
+                126.903912,
+                "연어 덮밥·사시미로 유명한 망리단길 맛집",
+                5
         ));
         two.addCourse(twoHealing);
 
@@ -157,16 +175,16 @@ public class PassSeedData {
                 1
         );
         twoFood.addSpot(Spot.create(
-                "망원시장",
+                "최네집 떡볶이 - 망원시장점",
                 "시장",
-                "서울 마포구 망원동 414-3",
-                37.556347,
-                126.905681,
-                "시장 안 먹거리 골목부터 시작",
+                "서울 마포구 망원동 402-12",
+                37.556412,
+                126.905512,
+                "망원시장 골목 떡볶이·순대 스테디",
                 0
         ));
         twoFood.addSpot(Spot.create(
-                "할매순대국 망원본점",
+                "할매순대국 - 망원시장점",
                 "맛집",
                 "서울 마포구 망원로 59",
                 37.556102,
@@ -175,7 +193,7 @@ public class PassSeedData {
                 1
         ));
         twoFood.addSpot(Spot.create(
-                "진미식당",
+                "진미식당 - 망원점",
                 "맛집",
                 "서울 마포구 망원로10길 7",
                 37.556218,
@@ -184,7 +202,7 @@ public class PassSeedData {
                 2
         ));
         twoFood.addSpot(Spot.create(
-                "오향족발 망원점",
+                "오향족발 - 망원시장점",
                 "맛집",
                 "서울 마포구 망원로6길 15",
                 37.555891,
@@ -202,22 +220,31 @@ public class PassSeedData {
                 2
         );
         twoExperience.addSpot(Spot.create(
-                "망원시장",
+                "호돌이 닭강정 - 망원시장점",
                 "마켓",
                 "서울 마포구 망원동 414-3",
                 37.556347,
                 126.905681,
-                "골목 골목 시장 산책",
+                "시장 입구 닭강정, 현지인 단골",
                 0
         ));
         twoExperience.addSpot(Spot.create(
-                "문화비축창",
+                "문화비축창 - 망원점",
                 "문화공간",
                 "서울 마포구 월드컵로1길 19",
                 37.554198,
                 126.9015,
                 "전시·공연, 망원동 대표 문화 스팟",
                 1
+        ));
+        twoExperience.addSpot(Spot.create(
+                "망원책방 노트 - 망원점",
+                "서점",
+                "서울 마포구 포은로8길 41",
+                37.556012,
+                126.901892,
+                "망원 골목 독립서점, 잠깐 쉬어가기 좋아요",
+                2
         ));
         two.addCourse(twoExperience);
 
@@ -251,4 +278,3 @@ public class PassSeedData {
         return List.of(one, two);
     }
 }
-
